@@ -4,7 +4,7 @@ using Discord.WebSocket;
 using DiscordBot.Static;
 using Discord.Net.Providers.WS4Net;
 using Discord.Net.Providers.UDPClient;
-using DiscordBot.References;
+using System;
 
 namespace DiscordBot
 {
@@ -18,7 +18,7 @@ namespace DiscordBot
 
         private async Task Start()
         {
-            //CreateSocketClient();
+            CreateSocketClient();
             await Task.Factory.StartNew(async () => await InitClientWithInfoAsync());
             await Task.Factory.StartNew(async () => await InitCommandAsync());
 
@@ -37,17 +37,24 @@ namespace DiscordBot
 
         private async Task InitClientWithInfoAsync()
         {
-            await _client.LoginAsync(TokenType.Bot, BotInfo.Token);
+            string token = BotInfo.Token;
+            await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
 
             await _client.SetGameAsync(BotInfo.Game);
             await _client.SetStatusAsync(BotInfo.Status);
+
+            _client.Log += (m) =>
+            {
+                Console.Write(m.ToString() + "\n");
+                return Task.Delay(0);
+            };
         }
 
         private async Task InitCommandAsync()
         {
-            //await _command.InitializeAsync(_client);
-            await VoteInfo.VoteCommand.InitializeAsync(_client);
+            await _command.InitializeAsync(_client);
+            //await VoteInfo.VoteCommand.InitializeAsync(_client);
         }
     }
 }

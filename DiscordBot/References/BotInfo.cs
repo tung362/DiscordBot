@@ -1,6 +1,7 @@
 ﻿using Discord;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,15 @@ namespace DiscordBot.Static
 {
     class BotInfo
     {
-        //public const string Token = "MzM1MjczOTU3MDEzOTc5MTQ3.DEnXuQ.Zrs7_8e_7k28ShwUqf0LAuEq-oQ";
-        public static string Token = "MzM1MjczOTU3MDEzOTc5MTQ3.DPg6gA.TSm3jTctcy4xct3XBlfvwXv-Mlo";
+        public static string Token {
+            get
+            {
+                StreamReader reader = File.OpenText("Token.token");
+                string line = reader.ReadLine();
+                Console.Write("Token: " + line + "\n");
+                return line;
+            }
+        }
         public static string Game = "-̸̷̨̨̢̯̰̣͔͍̼̯͔̺̦̾̃̋̌͆̍̏̋͋͋̂̾͊̄͠Dat A$$-̸̨̨̢̯̰̣͔͍̼̯͔̾̃̋̌͆̍̏̋͋͠";
         public static UserStatus Status = UserStatus.DoNotDisturb;
     }
