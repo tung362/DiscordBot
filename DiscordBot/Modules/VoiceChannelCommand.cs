@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using DiscordBot.References;
 
 namespace DiscordBot.Modules
 {
@@ -52,7 +53,7 @@ namespace DiscordBot.Modules
             DeletePlaylist();
             List<SocketVoiceChannel> voiceChannels = Context.Guild.VoiceChannels.ToList<SocketVoiceChannel>();
             await voiceChannels[index].ConnectAsync();
-            Program.PreviousVoiceChannelIndex = index;
+            VoiceInfo.PreviousVoiceChannelIndex = index;
 
             await Context.Message.DeleteAsync();
         }
@@ -70,7 +71,7 @@ namespace DiscordBot.Modules
                     {
                         DeletePlaylist();
                         await voiceChannels[i].ConnectAsync();
-                        Program.PreviousVoiceChannelIndex = i;
+                        VoiceInfo.PreviousVoiceChannelIndex = i;
                         break;
                     }
                 }
@@ -82,7 +83,7 @@ namespace DiscordBot.Modules
         public async Task LeaveChannel()
         {
             await Context.Message.DeleteAsync();
-            if (Program.PreviousAudioClient != null) await Program.PreviousAudioClient.StopAsync();
+            if (VoiceInfo.PreviousAudioClient != null) await VoiceInfo.PreviousAudioClient.StopAsync();
         }
         #endregion
 
@@ -114,7 +115,7 @@ namespace DiscordBot.Modules
             await Context.Message.DeleteAsync();
 
             //Don't do anything if never joined a voice channel
-            if (Program.PreviousVoiceChannelIndex == -1) return;
+            if (VoiceInfo.PreviousVoiceChannelIndex == -1) return;
 
             //Load
             List<string> entries = LoadPlaylist();
@@ -129,8 +130,8 @@ namespace DiscordBot.Modules
             if (entries.Count == 1)
             {
                 List<SocketVoiceChannel> voiceChannels = Context.Guild.VoiceChannels.ToList<SocketVoiceChannel>();
-                IAudioClient audioClient = await voiceChannels[Program.PreviousVoiceChannelIndex].ConnectAsync();
-                Program.PreviousAudioClient = audioClient;
+                IAudioClient audioClient = await voiceChannels[VoiceInfo.PreviousVoiceChannelIndex].ConnectAsync();
+                VoiceInfo.PreviousAudioClient = audioClient;
                 await SendAsync(audioClient, entries[0]);
             }
         }
@@ -141,7 +142,7 @@ namespace DiscordBot.Modules
             await Context.Message.DeleteAsync();
 
             //Don't do anything if never joined a voice channel
-            if (Program.PreviousVoiceChannelIndex == -1 || Program.SkippingSong) return;
+            if (VoiceInfo.PreviousVoiceChannelIndex == -1 || VoiceInfo.SkippingSong) return;
 
             //Load
             List<string> entries = LoadPlaylist();
@@ -152,14 +153,14 @@ namespace DiscordBot.Modules
             //Save
             SavePlaylist(entries);
 
-            Program.SkippingSong = true;
+            VoiceInfo.SkippingSong = true;
 
             //Play if theres any songs left on queue
             if (entries.Count != 0)
             {
                 List<SocketVoiceChannel> voiceChannels = Context.Guild.VoiceChannels.ToList<SocketVoiceChannel>();
-                IAudioClient audioClient = await voiceChannels[Program.PreviousVoiceChannelIndex].ConnectAsync();
-                Program.PreviousAudioClient = audioClient;
+                IAudioClient audioClient = await voiceChannels[VoiceInfo.PreviousVoiceChannelIndex].ConnectAsync();
+                VoiceInfo.PreviousAudioClient = audioClient;
                 await SendAsync(audioClient, entries[0]);
             }
         }
@@ -170,12 +171,12 @@ namespace DiscordBot.Modules
             await Context.Message.DeleteAsync();
 
             //Don't do anything if never joined a voice channel
-            if (Program.PreviousVoiceChannelIndex == -1) return;
+            if (VoiceInfo.PreviousVoiceChannelIndex == -1) return;
 
             DeletePlaylist();
             List<SocketVoiceChannel> voiceChannels = Context.Guild.VoiceChannels.ToList<SocketVoiceChannel>();
-            IAudioClient audioClient = await voiceChannels[Program.PreviousVoiceChannelIndex].ConnectAsync();
-            Program.PreviousAudioClient = audioClient;
+            IAudioClient audioClient = await voiceChannels[VoiceInfo.PreviousVoiceChannelIndex].ConnectAsync();
+            VoiceInfo.PreviousAudioClient = audioClient;
         }
         #endregion
 
@@ -183,7 +184,7 @@ namespace DiscordBot.Modules
         /*Voice channel tools*/
         private async Task NextSong()
         {
-            if (Program.PreviousVoiceChannelIndex == -1) return;
+            if (VoiceInfo.PreviousVoiceChannelIndex == -1) return;
 
             //Load
             List<string> entries = LoadPlaylist();
@@ -198,8 +199,8 @@ namespace DiscordBot.Modules
             if (entries.Count != 0)
             {
                 List<SocketVoiceChannel> voiceChannels = Context.Guild.VoiceChannels.ToList<SocketVoiceChannel>();
-                IAudioClient audioClient = await voiceChannels[Program.PreviousVoiceChannelIndex].ConnectAsync();
-                Program.PreviousAudioClient = audioClient;
+                IAudioClient audioClient = await voiceChannels[VoiceInfo.PreviousVoiceChannelIndex].ConnectAsync();
+                VoiceInfo.PreviousAudioClient = audioClient;
                 await SendAsync(audioClient, entries[0]);
             }
         }
@@ -246,13 +247,13 @@ namespace DiscordBot.Modules
         private void DeleteMusic()
         {
             //Kill ffmpeg before deleting songs
-            if (Program.Previousffmpeg != null)
+            if (VoiceInfo.Previousffmpeg != null)
             {
-                if(!Program.Previousffmpeg.HasExited)
+                if(!VoiceInfo.Previousffmpeg.HasExited)
                 {
-                    Program.Previousffmpeg.Kill();
-                    Program.Previousffmpeg.WaitForExit();
-                    Program.Previousffmpeg = null;
+                    VoiceInfo.Previousffmpeg.Kill();
+                    VoiceInfo.Previousffmpeg.WaitForExit();
+                    VoiceInfo.Previousffmpeg = null;
                 }
             }
             DirectoryInfo fileInfo = new DirectoryInfo("Temp");
@@ -296,10 +297,10 @@ namespace DiscordBot.Modules
                 //Download new song
                 var youtubeDL = Youtube(PathOrUrl);
                 youtubeDL.WaitForExit();
-                Program.SkippingSong = false;
+                VoiceInfo.SkippingSong = false;
                 //Stream song
                 var ffmpeg = CreateStream(true, "");
-                Program.Previousffmpeg = ffmpeg;
+                VoiceInfo.Previousffmpeg = ffmpeg;
                 var output = ffmpeg.StandardOutput.BaseStream;
                 var discord = client.CreatePCMStream(AudioApplication.Music);
                 await output.CopyToAsync(discord);
@@ -308,10 +309,10 @@ namespace DiscordBot.Modules
             //Physical song on computer or url to mp3
             else
             {
-                Program.SkippingSong = false;
+                VoiceInfo.SkippingSong = false;
                 //Stream song
                 var ffmpeg = CreateStream(false, PathOrUrl);
-                Program.Previousffmpeg = ffmpeg;
+                VoiceInfo.Previousffmpeg = ffmpeg;
                 var output = ffmpeg.StandardOutput.BaseStream;
                 var discord = client.CreatePCMStream(AudioApplication.Music);
                 await output.CopyToAsync(discord);

@@ -12,6 +12,7 @@ using Discord.WebSocket;
 using Discord.Commands;
 using Discord.Audio;
 using DiscordBot.Modules;
+using DiscordBot.References;
 
 namespace DiscordBot
 {
@@ -80,7 +81,7 @@ namespace DiscordBot
             }
 
             //Commands
-            if (context.Message.Author.Id != context.Guild.CurrentUser.Id && context.Channel.Id == Program.ChurchChannel.Id)
+            if (context.Message.Author.Id != context.Guild.CurrentUser.Id && context.Channel.Id == ChurchInfo.ChurchChannel.Id)
             {
                 if (context.Message.Content == "Yes" || context.Message.Content == "yes") await Yes(context);
                 else if (context.Message.Content == "No" || context.Message.Content == "no") await No(context);
@@ -158,16 +159,16 @@ namespace DiscordBot
         #region Church Loop
         private async Task ChurchLoopAsync()
         {
-            Program.ChurchGuild = GetChurchGuild();
-            Program.ChurchChannel = GetChurchChannel();
-            if (Program.ChurchGuild == null || Program.ChurchChannel == null) await Reloop();
+            ChurchInfo.ChurchGuild = GetChurchGuild();
+            ChurchInfo.ChurchChannel = GetChurchChannel();
+            if (ChurchInfo.ChurchGuild == null || ChurchInfo.ChurchChannel == null) await Reloop();
 
             //Clear chat
             await ClearMessage();
 
             //Load
             List<VoteEntrieData> entries = LoadVotes();
-            List<SocketGuildUser> unvotedusers = Program.ChurchGuild.Users.ToList<SocketGuildUser>();
+            List<SocketGuildUser> unvotedusers = ChurchInfo.ChurchGuild.Users.ToList<SocketGuildUser>();
             List<SocketGuildUser> attendingUsers = new List<SocketGuildUser>();
             List<SocketGuildUser> notAttendingUsers = new List<SocketGuildUser>();
 
@@ -231,7 +232,7 @@ namespace DiscordBot
                 "\n" +
                 "\n" +
                 "**Updates every 10 seconds**" + "\n";
-            await Program.ChurchChannel.SendMessageAsync(text);
+            await ChurchInfo.ChurchChannel.SendMessageAsync(text);
 
             await Reloop();
         }
@@ -244,14 +245,14 @@ namespace DiscordBot
 
         private SocketGuild GetChurchGuild()
         {
-            if (Program.ChurchGuild != null) return Program.ChurchGuild;
+            if (ChurchInfo.ChurchGuild != null) return ChurchInfo.ChurchGuild;
             if (_client.Guilds.Count == 0) return null;
 
             SocketGuild retval = null;
             List<SocketGuild> guilds = _client.Guilds.ToList<SocketGuild>();
             for (int i = 0; i < guilds.Count; i++)
             {
-                if(guilds[i].Name == Program.ChurchGuildName)
+                if(guilds[i].Name == ChurchInfo.ChurchGuildName)
                 {
                     retval = guilds[i];
                     break;
@@ -262,14 +263,14 @@ namespace DiscordBot
 
         private SocketTextChannel GetChurchChannel()
         {
-            if (Program.ChurchChannel != null) return Program.ChurchChannel;
-            if (Program.ChurchGuild == null) return null;
+            if (ChurchInfo.ChurchChannel != null) return ChurchInfo.ChurchChannel;
+            if (ChurchInfo.ChurchGuild == null) return null;
 
             SocketTextChannel retval = null;
-            List<SocketTextChannel> channels = Program.ChurchGuild.TextChannels.ToList<SocketTextChannel>();
+            List<SocketTextChannel> channels = ChurchInfo.ChurchGuild.TextChannels.ToList<SocketTextChannel>();
             for (int i = 0; i < channels.Count; i++)
             {
-                if (channels[i].Name == Program.ChurchChannelName)
+                if (channels[i].Name == ChurchInfo.ChurchChannelName)
                 {
                     retval = channels[i];
                     break;
@@ -281,7 +282,7 @@ namespace DiscordBot
         public async Task ClearMessage()
         {
             //Gets messages
-            var messages = await Program.ChurchChannel.GetMessagesAsync(int.MaxValue).Flatten();
+            var messages = await ChurchInfo.ChurchChannel.GetMessagesAsync(int.MaxValue).Flatten();
             var msgs = messages.ToList<IMessage>();
 
             //Make filter out any non bot messages
@@ -295,7 +296,7 @@ namespace DiscordBot
                 }
             }
 
-            await Program.ChurchChannel.DeleteMessagesAsync(msgs);
+            await ChurchInfo.ChurchChannel.DeleteMessagesAsync(msgs);
         }
 
         private List<VoteEntrieData> LoadVotes()

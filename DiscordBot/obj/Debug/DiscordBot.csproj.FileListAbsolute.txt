@@ -22,3 +22,32 @@ C:\Users\Tung Nguyen\Desktop\Dev\VisualStudios\DiscordBot\DiscordBot\bin\Debug\S
 C:\Users\Tung Nguyen\Desktop\Dev\VisualStudios\DiscordBot\DiscordBot\bin\Debug\System.Interactive.Async.xml
 C:\Users\Tung Nguyen\Desktop\Dev\VisualStudios\DiscordBot\DiscordBot\obj\Debug\DiscordBot.exe
 C:\Users\Tung Nguyen\Desktop\Dev\VisualStudios\DiscordBot\DiscordBot\obj\Debug\DiscordBot.pdb
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\DiscordBot.exe.config
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\DiscordBot.exe
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\DiscordBot.pdb
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Commands.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Core.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Rest.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Rpc.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Webhook.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.WebSocket.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\System.Collections.Immutable.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\System.Interactive.Async.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Commands.xml
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Core.xml
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Rest.xml
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Rpc.xml
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Webhook.xml
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.WebSocket.xml
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\System.Collections.Immutable.xml
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\System.Interactive.Async.xml
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\obj\Debug\DiscordBot.csprojResolveAssemblyReference.cache
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\obj\Debug\DiscordBot.exe
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\obj\Debug\DiscordBot.pdb
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Providers.UDPClient.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Providers.WS4Net.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\WebSocket4Net.dll
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Providers.UDPClient.xml
+C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Discord.Net.Providers.WS4Net.xml

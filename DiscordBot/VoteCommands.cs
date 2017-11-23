@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Linq;
@@ -10,8 +9,7 @@ using System.Windows.Forms;
 using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
-using Discord.Audio;
-using DiscordBot.Modules;
+using DiscordBot.References;
 
 namespace DiscordBot
 {
@@ -53,7 +51,7 @@ namespace DiscordBot
             }
 
             //Commands
-            if (context.Message.Author.Id != context.Guild.CurrentUser.Id && context.Channel.Id == Program.VoteChannel.Id)
+            if (context.Message.Author.Id != context.Guild.CurrentUser.Id && context.Channel.Id == VoteInfo.VoteChannel.Id)
             {
                 if (context.Message.Content == "Yes" || context.Message.Content == "yes" || context.Message.Content == "Agree" || context.Message.Content == "agree") await Yes(context);
                 else if (context.Message.Content == "No" || context.Message.Content == "no" || context.Message.Content == "Disagree" || context.Message.Content == "disagree") await No(context);
@@ -131,11 +129,11 @@ namespace DiscordBot
 
         public async Task Finish(SocketCommandContext context)
         {
-            Program.AnnouncementChannel = GetAnnouncementChannel();
-            if (Program.AnnouncementChannel == null) return;
+            VoteInfo.AnnouncementChannel = GetAnnouncementChannel();
+            if (VoteInfo.AnnouncementChannel == null) return;
             //Load
             List<VoteEntrieData> entries = LoadVotes();
-            List<SocketGuildUser> unvotedusers = Program.VoteGuild.Users.ToList<SocketGuildUser>();
+            List<SocketGuildUser> unvotedusers = VoteInfo.VoteGuild.Users.ToList<SocketGuildUser>();
             List<SocketGuildUser> YesUsers = new List<SocketGuildUser>();
             List<SocketGuildUser> NoUsers = new List<SocketGuildUser>();
 
@@ -161,10 +159,10 @@ namespace DiscordBot
                 }
             }
 
-            if (YesUsers.Count > NoUsers.Count) await Program.AnnouncementChannel.SendMessageAsync("__**" + "Let It Be Known That The Server Has Agreed That " + LoadTopic() + "**__");
-            else if (YesUsers.Count < NoUsers.Count) await Program.AnnouncementChannel.SendMessageAsync("__**" + "Let It Be Known That The Server Has Disagreed That " + LoadTopic() + "**__");
-            else if (YesUsers.Count == NoUsers.Count && YesUsers.Count != 0 && NoUsers.Count != 0) await Program.AnnouncementChannel.SendMessageAsync("__**" + "Let It Be Known That The Server Could Not Decide If " + LoadTopic() + "**__");
-            else if (YesUsers.Count == 0 && NoUsers.Count == 0) await Program.AnnouncementChannel.SendMessageAsync("__**" + "NO ONE VOTED >:V" + "**__");
+            if (YesUsers.Count > NoUsers.Count) await VoteInfo.AnnouncementChannel.SendMessageAsync("__**" + "Let It Be Known That The Server Has Agreed That " + LoadTopic() + "**__");
+            else if (YesUsers.Count < NoUsers.Count) await VoteInfo.AnnouncementChannel.SendMessageAsync("__**" + "Let It Be Known That The Server Has Disagreed That " + LoadTopic() + "**__");
+            else if (YesUsers.Count == NoUsers.Count && YesUsers.Count != 0 && NoUsers.Count != 0) await VoteInfo.AnnouncementChannel.SendMessageAsync("__**" + "Let It Be Known That The Server Could Not Decide If " + LoadTopic() + "**__");
+            else if (YesUsers.Count == 0 && NoUsers.Count == 0) await VoteInfo.AnnouncementChannel.SendMessageAsync("__**" + "NO ONE VOTED >:V" + "**__");
             await Clear(context);
             SaveTopic("Need New Topic");
         }
@@ -173,16 +171,16 @@ namespace DiscordBot
         #region Vote Loop
         public async Task VoteLoopAsync()
         {
-            Program.VoteGuild = GetVoteGuild();
-            Program.VoteChannel = GetVoteChannel();
-            if (Program.VoteGuild == null || Program.VoteChannel == null) await Reloop();
+            VoteInfo.VoteGuild = GetVoteGuild();
+            VoteInfo.VoteChannel = GetVoteChannel();
+            if (VoteInfo.VoteGuild == null || VoteInfo.VoteChannel == null) await Reloop();
 
             //Clear chat
             await ClearMessage();
 
             //Load
             List<VoteEntrieData> entries = LoadVotes();
-            List<SocketGuildUser> unvotedusers = Program.VoteGuild.Users.ToList<SocketGuildUser>();
+            List<SocketGuildUser> unvotedusers = VoteInfo.VoteGuild.Users.ToList<SocketGuildUser>();
             List<SocketGuildUser> YesUsers = new List<SocketGuildUser>();
             List<SocketGuildUser> NoUsers = new List<SocketGuildUser>();
 
@@ -247,7 +245,7 @@ namespace DiscordBot
                 "\n" +
                 "\n" +
                 "**Updates whenever someone types something**" + "\n";
-            await Program.VoteChannel.SendMessageAsync(text);
+            await VoteInfo.VoteChannel.SendMessageAsync(text);
 
             //await Reloop();
         }
@@ -260,14 +258,14 @@ namespace DiscordBot
 
         private SocketGuild GetVoteGuild()
         {
-            if (Program.VoteGuild != null) return Program.VoteGuild;
+            if (VoteInfo.VoteGuild != null) return VoteInfo.VoteGuild;
             if (_client.Guilds.Count == 0) return null;
 
             SocketGuild retval = null;
             List<SocketGuild> guilds = _client.Guilds.ToList<SocketGuild>();
             for (int i = 0; i < guilds.Count; i++)
             {
-                if (guilds[i].Name == Program.VoteGuildName)
+                if (guilds[i].Name == VoteInfo.VoteGuildName)
                 {
                     retval = guilds[i];
                     break;
@@ -278,14 +276,14 @@ namespace DiscordBot
 
         private SocketTextChannel GetVoteChannel()
         {
-            if (Program.VoteChannel != null) return Program.VoteChannel;
-            if (Program.VoteGuild == null) return null;
+            if (VoteInfo.VoteChannel != null) return VoteInfo.VoteChannel;
+            if (VoteInfo.VoteGuild == null) return null;
 
             SocketTextChannel retval = null;
-            List<SocketTextChannel> channels = Program.VoteGuild.TextChannels.ToList<SocketTextChannel>();
+            List<SocketTextChannel> channels = VoteInfo.VoteGuild.TextChannels.ToList<SocketTextChannel>();
             for (int i = 0; i < channels.Count; i++)
             {
-                if (channels[i].Name == Program.VoteChannelName)
+                if (channels[i].Name == VoteInfo.VoteChannelName)
                 {
                     retval = channels[i];
                     break;
@@ -296,14 +294,14 @@ namespace DiscordBot
 
         private SocketTextChannel GetAnnouncementChannel()
         {
-            if (Program.AnnouncementChannel != null) return Program.AnnouncementChannel;
-            if (Program.VoteGuild == null) return null;
+            if (VoteInfo.AnnouncementChannel != null) return VoteInfo.AnnouncementChannel;
+            if (VoteInfo.VoteGuild == null) return null;
 
             SocketTextChannel retval = null;
-            List<SocketTextChannel> channels = Program.VoteGuild.TextChannels.ToList<SocketTextChannel>();
+            List<SocketTextChannel> channels = VoteInfo.VoteGuild.TextChannels.ToList<SocketTextChannel>();
             for (int i = 0; i < channels.Count; i++)
             {
-                if (channels[i].Name == Program.AnnouncementChannelName)
+                if (channels[i].Name == VoteInfo.AnnouncementChannelName)
                 {
                     retval = channels[i];
                     break;
@@ -315,7 +313,7 @@ namespace DiscordBot
         public async Task ClearMessage()
         {
             //Gets messages
-            var messages = await Program.VoteChannel.GetMessagesAsync(int.MaxValue).Flatten();
+            var messages = await VoteInfo.VoteChannel.GetMessagesAsync(int.MaxValue).Flatten();
             var msgs = messages.ToList<IMessage>();
 
             //Make filter out any non bot messages
@@ -329,7 +327,7 @@ namespace DiscordBot
                 }
             }
 
-            await Program.VoteChannel.DeleteMessagesAsync(msgs);
+            await VoteInfo.VoteChannel.DeleteMessagesAsync(msgs);
         }
 
         private List<VoteEntrieData> LoadVotes()
