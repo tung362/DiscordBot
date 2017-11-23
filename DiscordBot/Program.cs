@@ -1,27 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using Discord.Commands;
 using Discord.Audio;
 using System.Diagnostics;
+using DiscordBot.Static;
+using Discord.Net.Providers.WS4Net;
+using Discord.Net.Providers.UDPClient;
 
 namespace DiscordBot
 {
     public class Program
-    {
-        /*Data*/
-        public static string Token = "MzM1MjczOTU3MDEzOTc5MTQ3.DEnXuQ.Zrs7_8e_7k28ShwUqf0LAuEq-oQ";
-        public static string Game = "-̸̷̨̨̢̯̰̣͔͍̼̯͔̺̦̾̃̋̌͆̍̏̋͋͋̂̾͊̄͠Dat A$$-̸̨̨̢̯̰̣͔͍̼̯͔̾̃̋̌͆̍̏̋͋͠";
-        public static UserStatus Status = UserStatus.DoNotDisturb;
-        //Voice Channel
-        public static int PreviousVoiceChannelIndex = -1;
-        public static IAudioClient PreviousAudioClient;
-        public static bool SkippingSong = false;
-        public static Process Previousffmpeg;
+    {        
         //Cancer
         public static Random Rand = new Random();
         public static bool SayLoopDeleteMessage = true;
@@ -48,11 +38,18 @@ namespace DiscordBot
 
         public async Task Start()
         {
-            await _client.LoginAsync(TokenType.Bot, Token);
+            _client = new DiscordSocketClient(new DiscordSocketConfig()
+            {
+                WebSocketProvider = WS4NetProvider.Instance,
+                UdpSocketProvider = UDPClientProvider.Instance,
+                ConnectionTimeout = 10000 // Ten seconds
+            });
+
+            await _client.LoginAsync(TokenType.Bot, BotInfo.Token);
             await _client.StartAsync();
 
-            await _client.SetGameAsync(Game);
-            await _client.SetStatusAsync(Status);
+            await _client.SetGameAsync(BotInfo.Game);
+            await _client.SetStatusAsync(BotInfo.Status);
 
             await _command.InitializeAsync(_client);
 
