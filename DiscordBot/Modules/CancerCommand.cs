@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
 using Discord.Commands;
-using Discord.Audio;
-using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using DiscordBot.References;
 
 namespace DiscordBot.Modules
 {
@@ -38,9 +36,9 @@ namespace DiscordBot.Modules
             }
 
             //Random user
-            int randomTargetedUser = Program.Rand.Next(0, users.Count);
+            int randomTargetedUser = CancerInfo.Rand.Next(0, users.Count);
             //Random insult entry
-            int randomInsult = Program.Rand.Next(0, entries.Count);
+            int randomInsult = CancerInfo.Rand.Next(0, entries.Count);
 
             //Ensures insult list isnt empty and then send message
             if (entries.Count != 0) await Context.Channel.SendMessageAsync(users[randomTargetedUser].Mention + " " + entries[randomInsult], true);
@@ -116,7 +114,7 @@ namespace DiscordBot.Modules
             List<string> entries = LoadGoodVideos();
 
             //Random good video entry
-            int randomGoodVideo = Program.Rand.Next(0, entries.Count);
+            int randomGoodVideo = CancerInfo.Rand.Next(0, entries.Count);
 
             //Ensures good video list isnt empty and then send message
             if (entries.Count != 0) await Context.Channel.SendMessageAsync(entries[randomGoodVideo]);
@@ -194,10 +192,10 @@ namespace DiscordBot.Modules
         [Command("sayloop")]
         public async Task SayLoop()
         {
-            if (Program.SayLoopDeleteMessage)
+            if (CancerInfo.SayLoopDeleteMessage)
             {
                 await Context.Message.DeleteAsync();
-                Program.SayLoopDeleteMessage = false;
+                CancerInfo.SayLoopDeleteMessage = false;
             }
             await ConsoleCommand();
         }
@@ -208,7 +206,7 @@ namespace DiscordBot.Modules
 
             if (input == "exit")
             {
-                Program.SayLoopDeleteMessage = true;
+                CancerInfo.SayLoopDeleteMessage = true;
                 return;
             }
 

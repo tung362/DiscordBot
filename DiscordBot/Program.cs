@@ -13,8 +13,6 @@ namespace DiscordBot
     public class Program
     {        
         //Cancer
-        public static Random Rand = new Random();
-        public static bool SayLoopDeleteMessage = true;
         //Church
         public static string ChurchGuildName = "Church Discord";
         public static string ChurchChannelName = "vote-channel";
