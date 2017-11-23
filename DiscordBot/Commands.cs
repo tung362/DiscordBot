@@ -1,10 +1,8 @@
 ﻿using Discord.WebSocket;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Discord.Commands;
 using System.Reflection;
 using System.Threading.Tasks;
+using DiscordBot.References;
 
 namespace DiscordBot
 {
@@ -30,7 +28,7 @@ namespace DiscordBot
             var context = new SocketCommandContext(_client, msg);
 
             int argPos = 0;
-			if (msg.HasCharPrefix('.', ref argPos) && context.Channel.Id != Program.VoteChannel.Id)
+			if (msg.HasCharPrefix('.', ref argPos) && context.Channel.Id != VoteInfo.VoteChannel.Id)
             {
 				var result = await _service.ExecuteAsync(context, argPos);
 

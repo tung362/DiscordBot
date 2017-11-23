@@ -22,7 +22,7 @@ namespace DiscordBot.Modules
             SaveTopic(topic);
             List<VoteEntrieData> entries = new List<VoteEntrieData>();
             SaveVotes(entries);
-            await Program._votecommand.VoteLoopAsync();
+            await Program.VoteCommand.VoteLoopAsync();
         }
 
         #region Vote tools

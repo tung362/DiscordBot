@@ -92,7 +92,10 @@
     <Compile Include="ChurchCommands.cs" />
     <Compile Include="Modules\VoteCommand.cs" />
     <Compile Include="References\BotInfo.cs" />
+    <Compile Include="References\CancerInfo.cs" />
+    <Compile Include="References\ChurchInfo.cs" />
     <Compile Include="References\VoiceInfo.cs" />
+    <Compile Include="References\VoteInfo.cs" />
     <Compile Include="VoteCommands.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Modules\CancerCommand.cs" />

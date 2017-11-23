@@ -8,20 +8,7 @@ using Discord.Net.Providers.UDPClient;
 namespace DiscordBot
 {
     public class Program
-    {        
-        //Church
-        public static string ChurchGuildName = "Church Discord";
-        public static string ChurchChannelName = "vote-channel";
-        public static SocketGuild ChurchGuild;
-        public static SocketTextChannel ChurchChannel;
-        //Vote
-        public static string VoteGuildName = "Relaxation Station";
-        public static string VoteChannelName = "botspam";
-        public static string AnnouncementChannelName = "general";
-        public static SocketGuild VoteGuild;
-        public static SocketTextChannel VoteChannel;
-        public static SocketTextChannel AnnouncementChannel;
-
+    {
         static void Main(string[] args)
             => new Program().Start().GetAwaiter().GetResult();
 
@@ -29,6 +16,7 @@ namespace DiscordBot
         private static Commands _command = new Commands();
         private static ChurchCommands _churchcommand = new ChurchCommands();
         private static VoteCommands _votecommand = new VoteCommands();
+        public static VoteCommands VoteCommand { get { return _votecommand; } }
 
         public async Task Start()
         {
