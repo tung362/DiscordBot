@@ -28,8 +28,6 @@ namespace DiscordBot
 			if (msg == null) return;
             var context = new SocketCommandContext(_client, msg);
 
-            Console.WriteLine(msg);
-
             int argPos = 0;
 			if (msg.HasCharPrefix('!', ref argPos) && context.Channel.Id != VoteInfo.VoteChannel.Id)
             {
