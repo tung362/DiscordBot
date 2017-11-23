@@ -18,7 +18,7 @@ namespace DiscordBot
 
         private async Task Start()
         {
-            CreateSocketClient();
+            //CreateSocketClient();
             await Task.Factory.StartNew(async () => await InitClientWithInfoAsync());
             await Task.Factory.StartNew(async () => await InitCommandAsync());
 
@@ -46,7 +46,7 @@ namespace DiscordBot
 
         private async Task InitCommandAsync()
         {
-            await _command.InitializeAsync(_client);
+            //await _command.InitializeAsync(_client);
             await VoteInfo.VoteCommand.InitializeAsync(_client);
         }
     }
