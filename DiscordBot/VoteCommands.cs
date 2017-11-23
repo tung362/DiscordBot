@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Linq;
@@ -10,8 +9,6 @@ using System.Windows.Forms;
 using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
-using Discord.Audio;
-using DiscordBot.Modules;
 using DiscordBot.References;
 
 namespace DiscordBot

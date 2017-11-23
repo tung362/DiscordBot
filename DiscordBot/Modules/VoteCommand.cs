@@ -10,6 +10,7 @@ using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using Discord.Audio;
+using DiscordBot.References;
 
 namespace DiscordBot.Modules
 {
@@ -22,7 +23,7 @@ namespace DiscordBot.Modules
             SaveTopic(topic);
             List<VoteEntrieData> entries = new List<VoteEntrieData>();
             SaveVotes(entries);
-            await Program.VoteCommand.VoteLoopAsync();
+            await VoteInfo.VoteCommand.VoteLoopAsync();
         }
 
         #region Vote tools

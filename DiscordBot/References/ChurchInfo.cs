@@ -8,5 +8,7 @@ namespace DiscordBot.References
         public static string ChurchChannelName = "vote-channel";
         public static SocketGuild ChurchGuild;
         public static SocketTextChannel ChurchChannel;
+
+        private static ChurchCommands _churchcommand = new ChurchCommands();
     }
 }

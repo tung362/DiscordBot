@@ -10,5 +10,8 @@ namespace DiscordBot.References
         public static SocketGuild VoteGuild;
         public static SocketTextChannel VoteChannel;
         public static SocketTextChannel AnnouncementChannel;
+
+        private static VoteCommands _votecommand = new VoteCommands();
+        public static VoteCommands VoteCommand { get { return _votecommand; } }
     }
 }
