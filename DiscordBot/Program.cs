@@ -1,9 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using Discord.Audio;
-using System.Diagnostics;
 using DiscordBot.Static;
 using Discord.Net.Providers.WS4Net;
 using Discord.Net.Providers.UDPClient;
@@ -12,7 +9,6 @@ namespace DiscordBot
 {
     public class Program
     {        
-        //Cancer
         //Church
         public static string ChurchGuildName = "Church Discord";
         public static string ChurchChannelName = "vote-channel";
@@ -29,10 +25,10 @@ namespace DiscordBot
         static void Main(string[] args)
             => new Program().Start().GetAwaiter().GetResult();
 
-        public static DiscordSocketClient _client = new DiscordSocketClient();
-        public static Commands _command = new Commands();
-        public static ChurchCommands _churchcommand = new ChurchCommands();
-        public static VoteCommands _votecommand = new VoteCommands();
+        private static DiscordSocketClient _client = new DiscordSocketClient();
+        private static Commands _command = new Commands();
+        private static ChurchCommands _churchcommand = new ChurchCommands();
+        private static VoteCommands _votecommand = new VoteCommands();
 
         public async Task Start()
         {
