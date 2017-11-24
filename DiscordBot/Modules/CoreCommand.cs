@@ -15,10 +15,11 @@ namespace DiscordBot.Modules
         [Command("help")]
         public async Task Help()
         {
+            var eb = new EmbedBuilder();
+            eb.Title = "📝 List of commands: ";
             string text =
                 "```css" + "\n" +
-                "List of commands: " + "\n" +
-                "********General*********" + "\n" +
+                "👑 [General]" + "\n" +
                 ".help                          :   Display commands" + "\n" +
                 ".begone                        :   Log off" + "\n" +
                 ".about                         :   Credits" + "\n" +
@@ -26,20 +27,26 @@ namespace DiscordBot.Modules
                 ".servers                       :   All servers connected to" + "\n" +
                 ".roles <ServerID>              :   All roles of a server" + "\n" +
                 ".permissions <ServerID> <RoleID> :   All permissions of a role" + "\n" +
-                "\n" +
-                "********Channel*********" + "\n" +
+                "```" + "\n" +
+
+                "```css" + "\n" +
+                "🔊 [Channel]" + "\n" +
                 ".channels                      :   Displays channel name and index" + "\n" +
                 ".join <ChannelID>              :   Joins a voice channel by index" + "\n" +
                 ".joinme                        :   Joins current channel" + "\n" +
                 ".leave                         :   Leaves the current channel" + "\n" +
-                "\n" +
-                "*****Voice channel******" + "\n" +
+                "```" + "\n" +
+
+                "```css" + "\n" +
+                "🎶 [Music]" + "\n" +
                 ".playlist                      :   All songs on queue" + "\n" +
                 ".play <Url or Path>            :   Adds music from url or root path to queue" + "\n" +
                 ".skip                          :   Skip to next queue" + "\n" +
                 ".stop                          :   Stop playing and clear playlist" + "\n" +
-                "\n" +
-                "*********Cancer*********" + "\n" +
+                "```" + "\n" +
+
+                "```css" + "\n" +
+                "🤡 [Cancer]" + "\n" +
                 ".insult                        :   Insults a random online user" + "\n" +
                 ".insultlist                    :   List of all insult entry indexes" + "\n" +
                 ".addinsult <Insult \"\">         :   Add insult to list of insults" + "\n" +
@@ -53,7 +60,9 @@ namespace DiscordBot.Modules
                 ".say <Text>                    :   Make bot say something" + "\n" +
                 ".votetopic <Topic \"\">          :   Change voting topic" + "\n" +
                 "```";
-            await Context.Channel.SendMessageAsync(text);
+            eb.WithDescription(text);
+            eb.WithColor(Color.Green);
+            await Context.Channel.SendMessageAsync("", false, eb);
             await Context.Message.DeleteAsync();
         }
 

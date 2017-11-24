@@ -18,19 +18,29 @@ namespace DiscordBot.Modules
         [Command("about")]
         public async Task About()
         {
+            var eb = new EmbedBuilder();
+            eb.Title = "🎉 Credits: ";
             string text =
-                "```" +
-                "My owner's name is: " + Context.Message.Author.Username + "\n" +
-                "My owner's id is: " + Context.Message.Author.Id + "\n" +
-                "My owner is: " + Context.Message.Author.Status + "\n" +
+                "Made By:" + "\n" +
+                "```" + "\n" +
+                "Tung Nguyen" + "\n" +
+                "```" + "\n" +
+
+                "Refactored By:" + "\n" +
+                "```" + "\n" +
+                "Riley Smith" + "\n" +
                 "```";
-            await Context.Channel.SendMessageAsync(text);
+            eb.WithDescription(text);
+            eb.WithColor(Color.Purple);
+            await Context.Channel.SendMessageAsync("", false, eb);
             await Context.Message.DeleteAsync();
         }
 
         [Command("status")]
         public async Task Status()
         {
+            var eb = new EmbedBuilder();
+            eb.Title = "👾 Status: ";
             string text =
                 "```" +
                 "Server owner's name is: " + Context.Guild.Owner.Username + "\n" +
@@ -43,22 +53,27 @@ namespace DiscordBot.Modules
                 "Number of text channels: " + Context.Guild.TextChannels.Count + "\n" +
                 "Number of voice channels: " + Context.Guild.VoiceChannels.Count + "\n" +
                 "```";
-            await Context.Channel.SendMessageAsync(text);
+            eb.WithDescription(text);
+            eb.WithColor(Color.Gold);
+            await Context.Channel.SendMessageAsync("", false, eb);
             await Context.Message.DeleteAsync();
         }
 
         [Command("servers")]
         public async Task ServerList()
         {
+            var eb = new EmbedBuilder();
+            eb.Title = "🌊 List of Servers: ";
             string text = "```css\n";
             List<SocketGuild> guilds = Context.Client.Guilds.ToList<SocketGuild>();
             for (int i = 0; i < guilds.Count; i++)
             {
-                if (i == 0) text += "List of Servers \n";
                 text += i + ": " + guilds[i].Name + "\n";
                 if (i == guilds.Count - 1) text += "```";
             }
-            await Context.Channel.SendMessageAsync(text);
+            eb.WithDescription(text);
+            eb.WithColor(Color.Blue);
+            await Context.Channel.SendMessageAsync("", false, eb);
             await Context.Message.DeleteAsync();
         }
 
@@ -68,14 +83,17 @@ namespace DiscordBot.Modules
             List<SocketGuild> guilds = Context.Client.Guilds.ToList<SocketGuild>();
             List<SocketRole> roles = guilds[guildID].Roles.ToList<SocketRole>();
 
+            var eb = new EmbedBuilder();
+            eb.Title = "🏄 Role list of " + guilds[guildID].Name + " Server";
             string text = "```css\n";
             for (int i = 0; i < roles.Count; i++)
             {
-                if (i == 0) text += "Role list of " + guilds[guildID].Name + " Server" + "\n";
                 text += i + ": " + roles[i].Name + "\n";
                 if (i == roles.Count - 1) text += "```";
             }
-            await Context.Channel.SendMessageAsync(text);
+            eb.WithDescription(text);
+            eb.WithColor(Color.Orange);
+            await Context.Channel.SendMessageAsync("", false, eb);
             await Context.Message.DeleteAsync();
         }
 
@@ -85,9 +103,10 @@ namespace DiscordBot.Modules
             List<SocketGuild> guilds = Context.Client.Guilds.ToList<SocketGuild>();
             List<SocketRole> roles = guilds[guildID].Roles.ToList<SocketRole>();
 
+            var eb = new EmbedBuilder();
+            eb.Title = "💦 List of permissions for " + roles[roleID].Name + " of " + guilds[guildID].Name + " Server";
             string text =
                 "```css" + "\n" +
-                "List of permissions for " + roles[roleID].Name + " of " + guilds[guildID].Name + " Server" + ":" + "\n" +
                 "********Permissions*********" + "\n" +
                 "AddReactions                      :   " + roles[roleID].Permissions.AddReactions + "\n" +
                 "Administrator                     :   " + roles[roleID].Permissions.Administrator + "\n" +
@@ -119,7 +138,9 @@ namespace DiscordBot.Modules
                 "UseVAD                            :   " + roles[roleID].Permissions.UseVAD + "\n" +
                 "ReadMessages                      :   " + roles[roleID].Permissions.ReadMessages + "\n" +
                 "```";
-            await Context.Channel.SendMessageAsync(text);
+            eb.WithDescription(text);
+            eb.WithColor(Color.Red);
+            await Context.Channel.SendMessageAsync("", false, eb);
             await Context.Message.DeleteAsync();
         }
     }

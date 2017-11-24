@@ -99,14 +99,18 @@ namespace DiscordBot.Modules
 
             if (entries.Count == 0) return;
 
+            var eb = new EmbedBuilder();
+            eb.Title = "🎶 Playlist Queue";
             string text = "";
             for (int i = 0; i < entries.Count; i++)
             {
-                if (i == 0) text += "```Playlist Queue \n";
+                if (i == 0) text += "```\n";
                 text += i + ": " + entries[i] + "\n";
                 if (i == entries.Count - 1) text += "```";
             }
-            await Context.Channel.SendMessageAsync(text);
+            eb.WithDescription(text);
+            eb.WithColor(Color.Purple);
+            await Context.Channel.SendMessageAsync("", false, eb);
         }
 
         [Command("play", RunMode = RunMode.Async)]

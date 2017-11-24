@@ -94,6 +94,7 @@
     <Compile Include="References\BotInfo.cs" />
     <Compile Include="References\CancerInfo.cs" />
     <Compile Include="References\ChurchInfo.cs" />
+    <Compile Include="References\Tools.cs" />
     <Compile Include="References\VoiceInfo.cs" />
     <Compile Include="References\VoteInfo.cs" />
     <Compile Include="VoteCommands.cs" />

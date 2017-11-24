@@ -29,7 +29,7 @@ namespace DiscordBot
             var context = new SocketCommandContext(_client, msg);
 
             int argPos = 0;
-			if (msg.HasCharPrefix('!', ref argPos) && context.Channel.Id != VoteInfo.VoteChannel.Id)
+			if (msg.HasCharPrefix('.', ref argPos) && context.Channel.Id != VoteInfo.VoteChannel.Id)
             {
 				var result = await _service.ExecuteAsync(context, argPos);
 

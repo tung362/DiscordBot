@@ -5,6 +5,7 @@ using DiscordBot.Static;
 using Discord.Net.Providers.WS4Net;
 using Discord.Net.Providers.UDPClient;
 using System;
+using DiscordBot.References;
 
 namespace DiscordBot
 {
@@ -18,7 +19,7 @@ namespace DiscordBot
 
         private async Task Start()
         {
-            CreateSocketClient();
+            //CreateSocketClient(); //Note: prevents me from using voice channel for some reason -Tung
             await Task.Factory.StartNew(async () => await InitClientWithInfoAsync());
             await Task.Factory.StartNew(async () => await InitCommandAsync());
 
@@ -53,8 +54,8 @@ namespace DiscordBot
 
         private async Task InitCommandAsync()
         {
-            await _command.InitializeAsync(_client);
-            //await VoteInfo.VoteCommand.InitializeAsync(_client);
+            //await _command.InitializeAsync(_client);
+            await VoteInfo.VoteCommand.InitializeAsync(_client);
         }
     }
 }

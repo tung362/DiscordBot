@@ -86,3 +86,4 @@ C:\Users\Riley\Documents\DiscordBot\DiscordBot\obj\Debug\DiscordBot.csprojResolv
 C:\Users\Riley\Documents\DiscordBot\DiscordBot\obj\Debug\DiscordBot.exe
 C:\Users\Riley\Documents\DiscordBot\DiscordBot\obj\Debug\DiscordBot.pdb
 C:\Users\Riley\Documents\DiscordBot\DiscordBot\bin\Debug\Token.token
+C:\Users\Tung Nguyen\Desktop\Dev\VisualStudios\DiscordBot\DiscordBot\bin\Debug\Token.token

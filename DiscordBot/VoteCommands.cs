@@ -40,7 +40,7 @@ namespace DiscordBot
             var context = new SocketCommandContext(_client, msg);
 
             int argPos = 0;
-            if (msg.HasCharPrefix('!', ref argPos)) //HasCharPrefix
+            if (msg.HasCharPrefix('.', ref argPos)) //HasCharPrefix
             {
                 var result = await _service.ExecuteAsync(context, argPos);
 
@@ -53,6 +53,7 @@ namespace DiscordBot
             //Commands
             if (context.Message.Author.Id != context.Guild.CurrentUser.Id && context.Channel.Id == VoteInfo.VoteChannel.Id)
             {
+                Console.WriteLine(context.Message.Content);
                 if (context.Message.Content == "Yes" || context.Message.Content == "yes" || context.Message.Content == "Agree" || context.Message.Content == "agree") await Yes(context);
                 else if (context.Message.Content == "No" || context.Message.Content == "no" || context.Message.Content == "Disagree" || context.Message.Content == "disagree") await No(context);
                 else if (context.Message.Content == "Clear" || context.Message.Content == "clear") await Clear(context);
@@ -173,7 +174,11 @@ namespace DiscordBot
         {
             VoteInfo.VoteGuild = GetVoteGuild();
             VoteInfo.VoteChannel = GetVoteChannel();
-            if (VoteInfo.VoteGuild == null || VoteInfo.VoteChannel == null) await Reloop();
+            if (VoteInfo.VoteGuild == null || VoteInfo.VoteChannel == null)
+            {
+                await Reloop();
+                return;
+            }
 
             //Clear chat
             await ClearMessage();
@@ -207,45 +212,59 @@ namespace DiscordBot
             }
 
             //Message generation
-            string text =
-                "__**" + LoadTopic() + "**__" + "\n" +
-                "```css" + "\n" +
-                "👍[Agrees]" + "\n";
+            var eb = new EmbedBuilder();
+            string topicText = "__**" + LoadTopic() + "**__" + "\n";
+            //eb.WithDescription(topicText);
+            //eb.WithColor(new Color(255, 255, 255));
+            await VoteInfo.VoteChannel.SendMessageAsync(topicText);
+
+            eb.Title = "👍 Agrees";
+            string yesText = "```                                    ```";
             for (int i = 0; i < YesUsers.Count; i++)
             {
-                if (!YesUsers[i].IsBot) text += "#" + YesUsers[i].Username + " 👉👈" + "\n";
+                if(i == 0) yesText = "```css" + "\n";
+                if (!YesUsers[i].IsBot) yesText += "#" + Tools.SpaceToString(YesUsers[i].Username + " 👉👈", 30) + "\n";
+                if (i == YesUsers.Count - 1) yesText += "```";
             }
-            text +=
-                "```" + "```css" + "\n" +
-                "👎[Disagrees]" + "\n";
+            eb.WithDescription(yesText);
+            eb.WithColor(Color.Green);
+            await VoteInfo.VoteChannel.SendMessageAsync("", false, eb);
 
+            eb.Title = "👎 Disagrees";
+            string noText = "```                                    ```";
             for (int i = 0; i < NoUsers.Count; i++)
             {
-                if (!NoUsers[i].IsBot) text += "#" + NoUsers[i].Username + " 👉👌" + "\n";
+                if (i == 0) noText = "```css" + "\n";
+                if (!NoUsers[i].IsBot) noText += "#" + Tools.SpaceToString(NoUsers[i].Username + " 👉👌", 30) + "\n";
+                if (i == NoUsers.Count - 1) noText += "```";
             }
-            text +=
-                "```" + "```css" + "\n" +
-                "❓[Have Not Decided]" + "\n";
+            eb.WithDescription(noText);
+            eb.WithColor(Color.Gold);
+            await VoteInfo.VoteChannel.SendMessageAsync("", false, eb);
 
+            eb.Title = "❓ Have Not Decided";
+            string unvotedText = "```                                    ```";
             for (int i = 0; i < unvotedusers.Count; i++)
             {
-                if (!unvotedusers[i].IsBot) text += "#" + unvotedusers[i].Username + " 🦍" + "\n";
+                if (i == 0) unvotedText = "```css" + "\n";
+                if (!unvotedusers[i].IsBot) unvotedText += "#" + Tools.SpaceToString(unvotedusers[i].Username + " 🔍", 30) + "\n";
+                if (i == unvotedusers.Count - 1) unvotedText += "```";
             }
-            text += "```";
+            eb.WithDescription(unvotedText);
+            eb.WithColor(Color.Red);
+            await VoteInfo.VoteChannel.SendMessageAsync("", false, eb);
 
-            text +=
-                "\n" +
-                "***" + "\n" +
-                "ℹ️ Information" + "\n" +
-                "***" +
+            eb.Title = "ℹ️ Information";
+            string infoText =
                 "__**" + LoadTopic() + "**__" + "\n" +
                 "Type \"__***yes***__\" if you agree." + "\n" +
                 "Type \"__***no***__\" if you are disagree." + "\n" +
                 "\n" +
-                "\n" +
-                "\n" +
-                "**Updates whenever someone types something**" + "\n";
-            await VoteInfo.VoteChannel.SendMessageAsync(text);
+                "**Updates whenever someone types something**" + "\n" +
+                "__**                                                                                                                           **__";
+            eb.WithDescription(infoText);
+            eb.WithColor(Color.Blue);
+            await VoteInfo.VoteChannel.SendMessageAsync("", false, eb);
 
             //await Reloop();
         }
